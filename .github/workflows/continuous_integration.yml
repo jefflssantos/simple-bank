@@ -57,4 +57,9 @@ jobs:
           php artisan key:generate
 
       - name: Run PHPUnit with coverage check
-        run: php artisan test
+        run: php artisan test --coverage --coverage-clover clover.xml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+              token: ${{ secrets.CODECOV_TOKEN }}
