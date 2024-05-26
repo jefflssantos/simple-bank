@@ -1,0 +1,53 @@
+name: simple-bank
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: infra/app/Dockerfile
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - './:/var/www'
+    networks:
+      - app-tier
+    depends_on:
+      - nginx
+      - redis
+      - mysql
+
+  nginx:
+    image: 'nginx:stable-alpine3.19'
+    restart: unless-stopped
+    working_dir: /var/www
+    ports:
+      - '80:80'
+    volumes:
+      - './:/var/www'
+      - './infra/nginx/:/etc/nginx/conf.d/'
+    networks:
+      - app-tier
+
+  mysql:
+    image: 'mysql:8.0'
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_USER: '${DB_USERNAME}'
+    volumes:
+      - './infra/mysql/data:/var/lib/mysql'
+    ports:
+      - '3306:3306'
+    networks:
+      - app-tier
+
+  redis:
+    image: 'redis:alpine3.20'
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
