@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace Modules\User\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\User\Enums\UserAccountTypeEnum;
+use Modules\User\Enums\UserDocumentTypeEnum;
+use Modules\User\Factories\UserFactory;
 
 class User extends Authenticatable
 {
@@ -18,6 +21,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'account_type',
+        'document_type',
+        'document_number',
         'email',
         'password',
     ];
@@ -42,6 +48,16 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'account_type' => UserAccountTypeEnum::class,
+            'document_type' => UserDocumentTypeEnum::class
         ];
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return UserFactory::new();
     }
 }
