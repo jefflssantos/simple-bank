@@ -26,7 +26,6 @@ return new class extends Migration
                 UserDocumentTypeEnum::CNPJ->value
             ]);
             $table->string('document_number')->unique()->index();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
