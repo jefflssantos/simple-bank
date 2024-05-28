@@ -4,11 +4,13 @@ namespace Modules\User\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Modules\User\Enums\UserAccountTypeEnum;
 use Modules\User\Enums\UserDocumentTypeEnum;
 use Modules\User\Factories\UserFactory;
+use Modules\Wallet\Models\Wallet;
 
 class User extends Authenticatable
 {
@@ -21,11 +23,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'email',
+        'password',
         'account_type',
         'document_type',
         'document_number',
-        'email',
-        'password',
     ];
 
     /**
@@ -59,5 +61,13 @@ class User extends Authenticatable
     protected static function newFactory(): Factory
     {
         return UserFactory::new();
+    }
+
+    /**
+     * Get the wallet associated with the user.
+     */
+    public function wallet(): HasOne
+    {
+        return $this->hasOne(Wallet::class);
     }
 }
