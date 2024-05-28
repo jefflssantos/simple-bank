@@ -20,3 +20,4 @@ yarn-error.log
 /.vscode
 /infra/mysql/data
 .DS_Store
+/tests/reports
