@@ -59,6 +59,9 @@ jobs:
       - name: Run Laravel Pint code style check
         run: ./vendor/bin/pint --test
 
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse
+
       - name: Run PHPUnit with coverage check
         run: php artisan test --coverage --coverage-clover clover.xml
 
