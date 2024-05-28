@@ -56,6 +56,9 @@ jobs:
           php -r "file_exists('.env') || copy('.env.example', '.env');"
           php artisan key:generate
 
+      - name: Run Laravel Pint code style check
+        run: ./vendor/bin/pint --test
+
       - name: Run PHPUnit with coverage check
         run: php artisan test --coverage --coverage-clover clover.xml
 
