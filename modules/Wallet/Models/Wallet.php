@@ -36,6 +36,8 @@ class Wallet extends Model
 
     /**
      * Create a new factory instance for the model.
+     *
+     * @return Factory<Wallet>
      */
     protected static function newFactory(): Factory
     {
@@ -44,6 +46,8 @@ class Wallet extends Model
 
     /**
      * Get the user that owns the wallet.
+     *
+     * @return BelongsTo<User, Wallet>
      */
     public function user(): BelongsTo
     {

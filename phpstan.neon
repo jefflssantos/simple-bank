@@ -1,0 +1,14 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - modules/
+        - tests/
+
+    level: 9
+
+    inferPrivatePropertyTypeFromConstructor: true
+
+    treatPhpDocTypesAsCertain: false
