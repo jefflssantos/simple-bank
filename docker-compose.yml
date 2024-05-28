@@ -1,6 +1,11 @@
 name: simple-bank
 
 services:
+  horizon:
+    extends:
+      service: app
+    command: ["php", "artisan", "horizon"]
+
   app:
     build:
       context: .
