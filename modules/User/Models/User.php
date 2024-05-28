@@ -57,6 +57,8 @@ class User extends Authenticatable
 
     /**
      * Create a new factory instance for the model.
+     *
+     * @return Factory<User>
      */
     protected static function newFactory(): Factory
     {
@@ -65,6 +67,8 @@ class User extends Authenticatable
 
     /**
      * Get the wallet associated with the user.
+     *
+     * @return HasOne<Wallet>
      */
     public function wallet(): HasOne
     {

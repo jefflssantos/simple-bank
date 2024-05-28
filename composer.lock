@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5e468f31704588daba0d8a53dd39ff6",
+    "content-hash": "91ec32191b4e243ce5c8b34fcf43ff54",
     "packages": [
         {
             "name": "brick/math",
@@ -5863,6 +5863,75 @@
             "time": "2020-07-09T08:09:16+00:00"
         },
         {
+            "name": "larastan/larastan",
+            "version": "v2.9.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/larastan/larastan.git",
+                "reference": "5c805f636095cc2e0b659e3954775cf8f1dad1bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/5c805f636095cc2e0b659e3954775cf8f1dad1bb",
+                "reference": "5c805f636095cc2e0b659e3954775cf8f1dad1bb",
+                "shasum": ""
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                },
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larastan\\Larastan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Can Vural",
+                    "email": "can9119@gmail.com"
+                },
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                }
+            ],
+            "description": "Larastan - Discover bugs in your code without running it. A phpstan/phpstan wrapper for Laravel",
+            "support": {
+                "issues": "https://github.com/larastan/larastan/issues",
+                "source": "https://github.com/larastan/larastan/tree/v2.9.7"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/paypalme/enunomaduro",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/canvural",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/nunomaduro",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2024-05-27T18:33:26+00:00"
+        },
+        {
             "name": "laravel/pint",
             "version": "v1.16.0",
             "source": {
@@ -6284,6 +6353,64 @@
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
             "time": "2022-02-21T01:04:05+00:00"
+        },
+        {
+            "name": "phpstan/phpstan",
+            "version": "1.11.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "0d5d4294a70deb7547db655c47685d680e39cfec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0d5d4294a70deb7547db655c47685d680e39cfec",
+                "reference": "0d5d4294a70deb7547db655c47685d680e39cfec",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-05-24T13:23:04+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

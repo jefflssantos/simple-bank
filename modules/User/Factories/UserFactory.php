@@ -22,7 +22,7 @@ class UserFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     * @var class-string<\Modules\User\Models\User>
      */
     protected $model = User::class;
 
@@ -45,7 +45,9 @@ class UserFactory extends Factory
                 UserDocumentTypeEnum::CNPJ->value,
             ]),
             'document_number' => $documentType === UserDocumentTypeEnum::CPF->value
+                /** @phpstan-ignore-next-line  */
                 ? fake()->unique()->cpf(false)
+                /** @phpstan-ignore-next-line  */
                 : fake()->unique()->cnpj(false),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
