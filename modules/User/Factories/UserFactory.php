@@ -42,7 +42,7 @@ class UserFactory extends Factory
             ]),
             'document_type' => $documentType = fake()->randomElement([
                 UserDocumentTypeEnum::CPF->value,
-                UserDocumentTypeEnum::CNPJ->value
+                UserDocumentTypeEnum::CNPJ->value,
             ]),
             'document_number' => $documentType === UserDocumentTypeEnum::CPF->value
                 ? fake()->unique()->cpf(false)

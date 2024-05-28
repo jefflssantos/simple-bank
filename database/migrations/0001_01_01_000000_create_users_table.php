@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('email')->unique()->index();
             $table->enum('account_type', [
                 UserAccountTypeEnum::CUSTOMER->value,
-                UserAccountTypeEnum::RETAILER->value
+                UserAccountTypeEnum::RETAILER->value,
             ]);
             $table->enum('document_type', [
                 UserDocumentTypeEnum::CPF->value,
-                UserDocumentTypeEnum::CNPJ->value
+                UserDocumentTypeEnum::CNPJ->value,
             ]);
             $table->string('document_number')->unique()->index();
             $table->string('password');

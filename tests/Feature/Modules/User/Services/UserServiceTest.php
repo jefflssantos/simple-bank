@@ -12,7 +12,7 @@ class UserServiceTest extends TestCase
     public function test_should_check_if_user_is_retailer(): void
     {
         $user = User::factory()->create([
-            'account_type' => UserAccountTypeEnum::RETAILER
+            'account_type' => UserAccountTypeEnum::RETAILER,
         ]);
 
         $userService = new UserService($user);
@@ -23,7 +23,7 @@ class UserServiceTest extends TestCase
     public function test_should_check_if_user_is_not_retailer(): void
     {
         $user = User::factory()->create([
-            'account_type' => UserAccountTypeEnum::CUSTOMER
+            'account_type' => UserAccountTypeEnum::CUSTOMER,
         ]);
 
         $userService = new UserService($user);

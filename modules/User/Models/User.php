@@ -51,7 +51,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'account_type' => UserAccountTypeEnum::class,
-            'document_type' => UserDocumentTypeEnum::class
+            'document_type' => UserDocumentTypeEnum::class,
         ];
     }
 
