@@ -8,7 +8,8 @@ use Modules\User\Models\User;
 class UserService
 {
     public function __construct(private readonly User $user)
-    {}
+    {
+    }
 
     public function isRetailer(): bool
     {

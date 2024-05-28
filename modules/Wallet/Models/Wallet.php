@@ -19,7 +19,7 @@ class Wallet extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'balance'
+        'balance',
     ];
 
     /**
@@ -30,7 +30,7 @@ class Wallet extends Model
     protected function casts(): array
     {
         return [
-            'balance' => 'integer'
+            'balance' => 'integer',
         ];
     }
 

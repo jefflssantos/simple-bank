@@ -16,7 +16,7 @@ class WalletServiceTest extends TestCase
         $expectedBalance = 130;
         $user = User::factory()->create();
         $wallet = Wallet::factory()->for($user)->create([
-            'balance' => $currentBalance
+            'balance' => $currentBalance,
         ]);
         $walletService = new WalletService($wallet);
 
@@ -24,7 +24,7 @@ class WalletServiceTest extends TestCase
 
         $this->assertDatabaseHas('wallets', [
             'id' => $wallet->id,
-            'balance' => $expectedBalance
+            'balance' => $expectedBalance,
         ]);
     }
 
@@ -35,7 +35,7 @@ class WalletServiceTest extends TestCase
         $expectedBalance = 70;
         $user = User::factory()->create();
         $wallet = Wallet::factory()->for($user)->create([
-            'balance' => $currentBalance
+            'balance' => $currentBalance,
         ]);
         $walletService = new WalletService($wallet);
 
@@ -43,7 +43,7 @@ class WalletServiceTest extends TestCase
 
         $this->assertDatabaseHas('wallets', [
             'id' => $wallet->id,
-            'balance' => $expectedBalance
+            'balance' => $expectedBalance,
         ]);
     }
 }
