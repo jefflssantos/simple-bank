@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique()->index();
             $table->enum('account_type', [
-                UserAccountTypeEnum::CUSTOMER->value,
-                UserAccountTypeEnum::RETAILER->value,
+                UserAccountTypeEnum::Consumer->value,
+                UserAccountTypeEnum::Seller->value,
             ]);
             $table->enum('document_type', [
                 UserDocumentTypeEnum::CPF->value,

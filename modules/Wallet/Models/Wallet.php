@@ -53,4 +53,19 @@ class Wallet extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function credit(int $value): bool
+    {
+        return $this->update(['balance' => $this->balance + $value]);
+    }
+
+    public function debit(int $value): bool
+    {
+        return $this->update(['balance' => $this->balance - $value]);
+    }
+
+    public function hasBalance(int $amount): bool
+    {
+        return $this->balance >= $amount;
+    }
 }

@@ -7,7 +7,7 @@ parameters:
         - modules/
         - tests/
 
-    level: 9
+    level: 7
 
     inferPrivatePropertyTypeFromConstructor: true
 

@@ -37,8 +37,8 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'account_type' => fake()->randomElement([
-                UserAccountTypeEnum::CUSTOMER->value,
-                UserAccountTypeEnum::RETAILER->value,
+                UserAccountTypeEnum::Consumer->value,
+                UserAccountTypeEnum::Seller->value,
             ]),
             'document_type' => $documentType = fake()->randomElement([
                 UserDocumentTypeEnum::CPF->value,
@@ -52,5 +52,19 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    public function consumer(): static
+    {
+        return $this->state(fn () => [
+            'account_type' => UserAccountTypeEnum::Consumer->value,
+        ]);
+    }
+
+    public function seller(): static
+    {
+        return $this->state(fn () => [
+            'account_type' => UserAccountTypeEnum::Seller->value,
+        ]);
     }
 }

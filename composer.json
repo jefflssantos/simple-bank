@@ -52,7 +52,7 @@
         ],
         "phpmd": "./vendor/bin/phpmd modules ansi phpmd.ruleset.xml",
         "phpstan": "./vendor/bin/phpstan analyse",
-        "pint": "./vendor/bin/pint --test",
+        "pint": "./vendor/bin/pint",
         "test": [
             "@phpmd",
             "@phpstan",
