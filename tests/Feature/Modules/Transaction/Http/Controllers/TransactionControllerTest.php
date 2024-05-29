@@ -110,7 +110,15 @@ class TransactionControllerTest extends TestCase
         $response->assertPaymentRequired()
             ->assertExactJson(['message' => 'Sellers are not allowed to transfer.']);
 
-        $this->assertDatabaseCount('transactions', 0);
+        $this->assertDatabaseEmpty('transactions');
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payer->wallet->id,
+            'balance' => 42_00,
+        ]);
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payee->wallet->id,
+            'balance' => 0,
+        ]);
 
         Queue::assertNotPushed(NotificationServiceJob::class);
     }
@@ -130,7 +138,11 @@ class TransactionControllerTest extends TestCase
         $response->assertPaymentRequired()
             ->assertExactJson(['message' => 'Transfer not allowed to the same person.']);
 
-        $this->assertDatabaseCount('transactions', 0);
+        $this->assertDatabaseEmpty('transactions');
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payer->wallet->id,
+            'balance' => 0,
+        ]);
 
         Queue::assertNotPushed(NotificationServiceJob::class);
     }
@@ -152,7 +164,15 @@ class TransactionControllerTest extends TestCase
         $response->assertPaymentRequired()
             ->assertExactJson(['message' => 'Invalid transfer amount.']);
 
-        $this->assertDatabaseCount('transactions', 0);
+        $this->assertDatabaseEmpty('transactions');
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payer->wallet->id,
+            'balance' => 0,
+        ]);
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payee->wallet->id,
+            'balance' => 0,
+        ]);
 
         Queue::assertNotPushed(NotificationServiceJob::class);
     }
@@ -163,6 +183,7 @@ class TransactionControllerTest extends TestCase
 
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
+        $payer->wallet->credit(40_00);
         $payee = User::factory()->seller()->create();
 
         $response = $this->postJson(route('transfer'), [
@@ -174,8 +195,15 @@ class TransactionControllerTest extends TestCase
         $response->assertPaymentRequired()
             ->assertExactJson(['message' => 'Insufficient balance.']);
 
-        $this->assertDatabaseCount('transactions', 0);
-
+        $this->assertDatabaseEmpty('transactions');
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payer->wallet->id,
+            'balance' => 40_00,
+        ]);
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payee->wallet->id,
+            'balance' => 0,
+        ]);
         Queue::assertNotPushed(NotificationServiceJob::class);
     }
 
@@ -203,7 +231,15 @@ class TransactionControllerTest extends TestCase
         $response->assertPaymentRequired()
             ->assertExactJson(['message' => 'Transfer not allowed by the payment authorizer.']);
 
-        $this->assertDatabaseCount('transactions', 0);
+        $this->assertDatabaseEmpty('transactions');
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payer->wallet->id,
+            'balance' => 42_00,
+        ]);
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payee->wallet->id,
+            'balance' => 0,
+        ]);
 
         Queue::assertNotPushed(NotificationServiceJob::class);
     }
@@ -216,7 +252,7 @@ class TransactionControllerTest extends TestCase
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
         $payer->wallet->credit(42_00);
-        $payee = User::factory()->consumer()->create();
+        $payee = User::factory()->seller()->create();
 
         $response = $this->postJson(route('transfer'), [
             'value' => $transferAmount,
@@ -227,7 +263,16 @@ class TransactionControllerTest extends TestCase
         $response->assertPaymentRequired()
             ->assertExactJson(['message' => 'Transfer not allowed by the payment authorizer.']);
 
-        $this->assertDatabaseCount('transactions', 0);
+        $this->assertDatabaseEmpty('transactions');
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payer->wallet->id,
+            'balance' => 42_00,
+        ]);
+        $this->assertDatabaseHas('wallets', [
+            'id' => $payee->wallet->id,
+            'balance' => 0,
+        ]);
+
         Queue::assertNotPushed(NotificationServiceJob::class);
     }
 }
