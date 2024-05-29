@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Modules\Notification\Jobs\NotificationServiceJob;
 use Modules\User\Models\User;
-use Modules\Wallet\Models\Wallet;
 use Tests\TestCase;
 
 class TransactionControllerTest extends TestCase
@@ -23,9 +22,8 @@ class TransactionControllerTest extends TestCase
 
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
-        $payerWallet = Wallet::factory()->for($payer)->create(['balance' => 42_00]);
         $payee = User::factory()->seller()->create();
-        $payeeWallet = Wallet::factory()->for($payee)->create(['balance' => 0]);
+        $payer->wallet->credit(42_00);
 
         $response = $this->postJson(route('transfer'), [
             'value' => $transferAmount,
@@ -37,16 +35,16 @@ class TransactionControllerTest extends TestCase
 
         $this->assertDatabaseCount('transactions', 1);
         $this->assertDatabaseHas('transactions', [
-            'payer_wallet_id' => $payerWallet->id,
-            'payee_wallet_id' => $payeeWallet->id,
+            'payer_wallet_id' => $payer->wallet->id,
+            'payee_wallet_id' => $payee->wallet->id,
             'amount' => 42_00,
         ]);
         $this->assertDatabaseHas('wallets', [
-            'id' => $payerWallet->id,
+            'id' => $payer->wallet->id,
             'balance' => 0,
         ]);
         $this->assertDatabaseHas('wallets', [
-            'id' => $payeeWallet->id,
+            'id' => $payee->wallet->id,
             'balance' => 42_00,
         ]);
 
@@ -65,9 +63,8 @@ class TransactionControllerTest extends TestCase
 
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
-        $payerWallet = Wallet::factory()->for($payer)->create(['balance' => 42_00]);
         $payee = User::factory()->consumer()->create();
-        $payeeWallet = Wallet::factory()->for($payee)->create(['balance' => 0]);
+        $payer->wallet->credit(42_00);
 
         $response = $this->postJson(route('transfer'), [
             'value' => $transferAmount,
@@ -79,16 +76,16 @@ class TransactionControllerTest extends TestCase
 
         $this->assertDatabaseCount('transactions', 1);
         $this->assertDatabaseHas('transactions', [
-            'payer_wallet_id' => $payerWallet->id,
-            'payee_wallet_id' => $payeeWallet->id,
+            'payer_wallet_id' => $payer->wallet->id,
+            'payee_wallet_id' => $payee->wallet->id,
             'amount' => 42_00,
         ]);
         $this->assertDatabaseHas('wallets', [
-            'id' => $payerWallet->id,
+            'id' => $payer->wallet->id,
             'balance' => 0,
         ]);
         $this->assertDatabaseHas('wallets', [
-            'id' => $payeeWallet->id,
+            'id' => $payee->wallet->id,
             'balance' => 42_00,
         ]);
 
@@ -101,9 +98,8 @@ class TransactionControllerTest extends TestCase
 
         $transferAmount = 42.00;
         $payer = User::factory()->seller()->create();
-        $payerWallet = Wallet::factory()->for($payer)->create(['balance' => 42_00]);
         $payee = User::factory()->consumer()->create();
-        $payeeWallet = Wallet::factory()->for($payee)->create(['balance' => 0]);
+        $payer->wallet->credit(42_00);
 
         $response = $this->postJson(route('transfer'), [
             'value' => $transferAmount,
@@ -167,7 +163,6 @@ class TransactionControllerTest extends TestCase
 
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
-        Wallet::factory()->for($payer)->create(['balance' => 0]);
         $payee = User::factory()->seller()->create();
 
         $response = $this->postJson(route('transfer'), [
@@ -196,9 +191,8 @@ class TransactionControllerTest extends TestCase
 
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
-        Wallet::factory()->for($payer)->create(['balance' => 42_00]);
         $payee = User::factory()->consumer()->create();
-        Wallet::factory()->for($payee)->create(['balance' => 0]);
+        $payer->wallet->credit(42_00);
 
         $response = $this->postJson(route('transfer'), [
             'value' => $transferAmount,
@@ -221,9 +215,8 @@ class TransactionControllerTest extends TestCase
 
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
-        Wallet::factory()->for($payer)->create(['balance' => 42_00]);
+        $payer->wallet->credit(42_00);
         $payee = User::factory()->consumer()->create();
-        Wallet::factory()->for($payee)->create(['balance' => 0]);
 
         $response = $this->postJson(route('transfer'), [
             'value' => $transferAmount,

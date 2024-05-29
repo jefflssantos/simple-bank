@@ -2,6 +2,7 @@
 
 namespace Modules\User\Models;
 
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -10,8 +11,10 @@ use Illuminate\Notifications\Notifiable;
 use Modules\User\Enums\UserAccountTypeEnum;
 use Modules\User\Enums\UserDocumentTypeEnum;
 use Modules\User\Factories\UserFactory;
+use Modules\User\Observers\UserObserver;
 use Modules\Wallet\Models\Wallet;
 
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;

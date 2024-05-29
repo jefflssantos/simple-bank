@@ -2,17 +2,12 @@
 
 namespace Modules\Wallet\Models;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\User\Models\User;
-use Modules\Wallet\Factories\WalletFactory;
 
 class Wallet extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -32,16 +27,6 @@ class Wallet extends Model
         return [
             'balance' => 'integer',
         ];
-    }
-
-    /**
-     * Create a new factory instance for the model.
-     *
-     * @return Factory<Wallet>
-     */
-    protected static function newFactory(): Factory
-    {
-        return WalletFactory::new();
     }
 
     /**
