@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Modules\Transactions\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
 use Modules\User\Models\User;
 use Modules\Wallet\Models\Wallet;
 use Tests\TestCase;
@@ -10,6 +11,13 @@ class TransactionControllerTest extends TestCase
 {
     public function test_consumers_should_be_able_to_transfer_to_sellers(): void
     {
+        Http::fake([
+            '*' => Http::response(
+                '{"status" : "success", "data" : { "authorization" : true }}',
+                200
+            ),
+        ]);
+
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
         $payerWallet = Wallet::factory()->for($payer)->create(['balance' => 42_00]);
@@ -42,6 +50,13 @@ class TransactionControllerTest extends TestCase
 
     public function test_consumers_should_be_able_to_transfer_to_consumers(): void
     {
+        Http::fake([
+            '*' => Http::response(
+                '{"status" : "success", "data" : { "authorization" : true }}',
+                200
+            ),
+        ]);
+
         $transferAmount = 42.00;
         $payer = User::factory()->consumer()->create();
         $payerWallet = Wallet::factory()->for($payer)->create(['balance' => 42_00]);
@@ -141,6 +156,55 @@ class TransactionControllerTest extends TestCase
 
         $response->assertPaymentRequired()
             ->assertExactJson(['message' => 'Insufficient balance.']);
+
+        $this->assertDatabaseCount('transactions', 0);
+    }
+
+    public function test_it_should_fail_when_the_transfer_is_not_authorized(): void
+    {
+        Http::fake([
+            '*' => Http::response(
+                '{"status" : "failed", "data" : { "authorization" : false }}',
+                403
+            ),
+        ]);
+
+        $transferAmount = 42.00;
+        $payer = User::factory()->consumer()->create();
+        Wallet::factory()->for($payer)->create(['balance' => 42_00]);
+        $payee = User::factory()->consumer()->create();
+        Wallet::factory()->for($payee)->create(['balance' => 0]);
+
+        $response = $this->postJson(route('transfer'), [
+            'value' => $transferAmount,
+            'payer' => $payer->id,
+            'payee' => $payee->id,
+        ]);
+
+        $response->assertPaymentRequired()
+            ->assertExactJson(['message' => 'Transfer not allowed by the payment authorizer.']);
+
+        $this->assertDatabaseCount('transactions', 0);
+    }
+
+    public function test_it_should_fail_when_the_authorizer_request_failed(): void
+    {
+        Http::fake(['*' => Http::response('Server error', 500)]);
+
+        $transferAmount = 42.00;
+        $payer = User::factory()->consumer()->create();
+        Wallet::factory()->for($payer)->create(['balance' => 42_00]);
+        $payee = User::factory()->consumer()->create();
+        Wallet::factory()->for($payee)->create(['balance' => 0]);
+
+        $response = $this->postJson(route('transfer'), [
+            'value' => $transferAmount,
+            'payer' => $payer->id,
+            'payee' => $payee->id,
+        ]);
+
+        $response->assertPaymentRequired()
+            ->assertExactJson(['message' => 'Transfer not allowed by the payment authorizer.']);
 
         $this->assertDatabaseCount('transactions', 0);
     }

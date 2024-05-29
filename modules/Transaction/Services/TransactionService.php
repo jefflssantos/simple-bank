@@ -3,6 +3,7 @@
 namespace Modules\Transaction\Services;
 
 use Illuminate\Support\Facades\DB;
+use Modules\PaymentAuthorizers\Contracts\PaymentAuthorizerContract;
 use Modules\Transaction\DTOs\TransactionDTO;
 use Modules\Transaction\Exceptions\TransactionException;
 use Modules\Transaction\Models\Transaction;
@@ -10,25 +11,36 @@ use Modules\User\Models\User;
 
 class TransactionService
 {
-    public function transfer(TransactionDTO $transactionData): bool
+    public function __construct(
+        private readonly PaymentAuthorizerContract $paymentAuthorizer
+    ) {
+    }
+
+    public function transfer(TransactionDTO $transactionData): Transaction
     {
         $payer = User::with('wallet')->findOrFail($transactionData->payerId);
         $payee = User::with('wallet')->findOrFail($transactionData->payeeId);
 
         $this->validateTransferConditions($payer, $payee, $transactionData);
 
-        DB::transaction(function () use ($payer, $payee, $transactionData) {
+        return DB::transaction(function () use ($payer, $payee, $transactionData) {
             $payer->wallet->debit($transactionData->amount);
             $payee->wallet->credit($transactionData->amount);
 
-            Transaction::create([
+            $transaction = Transaction::create([
                 'payer_wallet_id' => $payer->wallet->id,
                 'payee_wallet_id' => $payee->wallet->id,
                 'amount' => $transactionData->amount,
             ]);
-        });
 
-        return true;
+            if (! $this->paymentAuthorizer->isAuthorized()) {
+                throw new TransactionException(
+                    'Transfer not allowed by the payment authorizer.'
+                );
+            }
+
+            return $transaction;
+        });
     }
 
     public function validateTransferConditions(

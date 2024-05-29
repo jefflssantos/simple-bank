@@ -19,7 +19,9 @@ class TransferRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $this->merge(['value' => number_format((float) $this->value, 2, '')]);
+        $this->merge([
+            'value' => (int) number_format((float) $this->value, 2, '', ''),
+        ]);
     }
 
     /**
