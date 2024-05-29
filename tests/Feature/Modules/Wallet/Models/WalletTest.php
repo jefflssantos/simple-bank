@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Models;
+namespace Tests\Feature\Modules\Wallet\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Wallet\Models\Wallet;
