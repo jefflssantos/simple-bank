@@ -5,7 +5,7 @@ namespace Modules\Transaction\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
-use Modules\PaymentAuthorizers\Services\EasyBankPaymentAuthorizerService;
+use Modules\PaymentAuthorizer\Services\EasyBankPaymentAuthorizerService;
 use Modules\Transaction\DTOs\TransactionDTO;
 use Modules\Transaction\Exceptions\TransactionException;
 use Modules\Transaction\Http\Requests\TransferRequest;
@@ -16,7 +16,9 @@ class TransactionController extends Controller
     public function __invoke(TransferRequest $request): JsonResponse
     {
         $transactionDTO = new TransactionDTO(
-            $request->value, (int) $request->payer, (int) $request->payee
+            $request->value,
+            (int) $request->payer,
+            (int) $request->payee
         );
 
         try {

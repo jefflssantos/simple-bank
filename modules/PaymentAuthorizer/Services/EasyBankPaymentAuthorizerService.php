@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\PaymentAuthorizers\Services;
+namespace Modules\PaymentAuthorizer\Services;
 
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Modules\PaymentAuthorizers\Contracts\PaymentAuthorizerContract;
+use Modules\PaymentAuthorizer\Contracts\PaymentAuthorizerContract;
 
 class EasyBankPaymentAuthorizerService implements PaymentAuthorizerContract
 {
@@ -13,7 +13,7 @@ class EasyBankPaymentAuthorizerService implements PaymentAuthorizerContract
     {
         try {
             $response = Http::retry(times: 3, sleepMilliseconds: 100)->get(
-                config('payment_authorizers.easy_bank.endpoint')
+                config('authorizer.endpoint')
             );
         } catch (RequestException $e) {
             if (! $e->response->forbidden()) {
