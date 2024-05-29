@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\PaymentAuthorizers\Contracts;
+namespace Modules\PaymentAuthorizer\Contracts;
 
 interface PaymentAuthorizerContract
 {
