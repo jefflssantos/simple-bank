@@ -57,13 +57,16 @@ jobs:
           php artisan key:generate
 
       - name: Run Laravel Pint code style check
-        run: ./vendor/bin/pint --test
+        run: ./vendor/bin/pint --test --no-ansi
 
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan analyse
+        run: ./vendor/bin/phpstan analyse --error-format=github
+
+      - name: Run PHPMD
+        run: ./vendor/bin/phpmd modules github phpmd.ruleset.xml
 
       - name: Run PHPUnit with coverage check
-        run: php artisan test --coverage --coverage-clover clover.xml
+        run: php artisan test --compact --no-ansi --coverage --min=100 --coverage-clover clover.xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
