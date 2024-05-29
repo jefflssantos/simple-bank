@@ -10,28 +10,29 @@ git clone git@github.com:jefflssantos/simple-bank.git
 
 ### Copy the ```.env.example```  to  ```.env```
 ```bash
+cd simple-bank
 cp .env.example .env
 ```
 
 ### Start docker (docker compose must be intalled) and install composer dependencies
 ```bash
-docker-compose up -d
-docker-compose exec app composer install
+docker compose up -d
+docker compose exec app composer install
 ```
 
 ### Create the app key
 ```bash
-docker-compose exec app artisan key:generate
+docker compose exec app php artisan key:generate
 ```
 
 ### Now you are able to run the tests and static analysis
 ```bash
-docker-compose exec app composer run test
+docker compose exec app composer run test
 ```
 
 ### Testing the API
 ```bash
-docker-compose exec app artisan migrate:fresh --seed
+docker compose exec app php artisan migrate:fresh --seed
 ```
 ```http request
 POST /transfer
