@@ -204,6 +204,7 @@ class TransactionControllerTest extends TestCase
             'id' => $payee->wallet->id,
             'balance' => 0,
         ]);
+
         Queue::assertNotPushed(NotificationServiceJob::class);
     }
 
